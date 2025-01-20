@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Meta Tags for when URL is sent via message -->
+        <meta charset="utf-8">
+        <meta name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta property="og:image"
+            content="http://halloweenvotingform.s3-website.us-east-2.amazonaws.com//resources/img/jackolantern.jpeg"
+            />
+        <meta property="og:type" content="website" />
+        <meta property="og:url"
+            content="http://halloweenvotingform.s3-website.us-east-2.amazonaws.com/"
+            />
+        <meta property="og:title" content="Johnson's Annual Halloween Party
+            Voting" />
+        <meta property="og:description"
+            content="Vote for your favorite Halloween costume" />
+        <!-- End of Meta Tags -->
+
+        <!-- Web Page Title -->
+        <title>Personal Mileage Reporting Tool</title>
+        <link rel="icon" href="resources/img/PMR_Logo.png" type="image/png"
+            sizes="16x16">
+
+        <!-- CSS only -->
+        <link href="resources/css/PMR_Styles.css" rel="stylesheet" />
+</head>
+<body>
+
+    <div class="container">
+        <h2>Mileage Log</h2>
+        <label for="mileage">Enter Mileage:</label>
+        <input type="number" id="mileage" min="1" step="1" required>
+        <button onclick="submitMileage()">Submit</button>
+        <p id="status"></p>
+    </div>
+
+    <div class="footer">
+        <!-- Copyright -->
+        <div class="text-center p-1">
+            <p class="m-0 text-center text-white">
+                <span class="footer-text"> Copyright &copy; </span>
+                <span class="footer-text" id="year"></span> <span
+                    class="footer-text">Personal Mileage Reporting Tool
+                </span> <span
+                    class="footer-statement">All Rights
+                    Reserved</span>
+            </p>
+            <!-- End of Copyright -->
+             <!-- Created By -->
+            <div id="fuzzyWebDesign" class="powered">
+                Created By Fuzzy Web Design LLC
+                <a id="WebDesignInquiry"><img
+                        class="powerImage"
+                        src="resources/img/BlueFuzzyLogo.png"
+                        alt=""></a>
+            </div>
+            <!-- End of Created By -->
+        </div>
+    </div>
+    <!-- End of Footer -->
+
+
+
+
+<!-- JavaScript Function-->
+<script>document.getElementById("year").innerHTML = new Date().getFullYear();</script>
+<!--End of JavaScript Function-->
+<!-- JavaScript-->
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script> 
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
+    <script src="resources/js/Variables.js"></script>
+    <script src="resources/js/PMR.js"></script>
+    <script src="resources/js/Dialogs.js"></script>
+    <script src="resources/js/Inquiry.js"></script>
+
+</body>
+</html>
