@@ -24,6 +24,14 @@ body {
     max-width: 400px;
 }
 
+#entryType {
+    font-size: 16px;
+}
+
+label {
+    font-size: 20px;;
+}
+
 input {
     padding: 10px;
     margin: 10px 0;
