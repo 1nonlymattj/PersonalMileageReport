@@ -13,11 +13,6 @@ dependencies:
   # flutter_email_sender: ^6.0.3
   flutter_launcher_icons: ^0.14.3
   shared_preferences: ^2.3.5
-  meta: any
-  petitparser: any
-  characters: any
-  collection: any
-  material_color_utilities: any
 
 flutter_icons:
   android: true

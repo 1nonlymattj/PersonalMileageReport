@@ -24,12 +24,26 @@ body {
     max-width: 400px;
 }
 
+#companySelection {
+    display: flex;
+    flex-wrap: wrap;
+    width: 300px; /* Adjust width as needed */
+}
+
+.companySelection {
+    /* display: flex; */
+    align-items: center;
+    width: 50%; /* Ensures two checkboxes per row */
+    margin-bottom: 5px;
+    font-size: 16px !important;
+}
+
 #entryType {
-    font-size: 16px;
+    font-size: 20px;
 }
 
 label {
-    font-size: 20px;;
+    font-size: 20px;
 }
 
 input {

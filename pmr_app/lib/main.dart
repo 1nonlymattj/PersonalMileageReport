@@ -12,7 +12,11 @@ class StartupWidget extends StatelessWidget {
   const StartupWidget({super.key});
 
   Future<bool> _loadThemePreference() async {
-    return await ThemePreferences.getTheme();
+    try {
+      return await ThemePreferences.getTheme();
+    } catch (e) {
+      return false; // Fallback to default theme if error occurs
+    }
   }
 
   @override
@@ -234,7 +238,7 @@ class _MileageScreenState extends State<MileageScreen> {
               Column(
                 children: [
                   SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.25,
+                    width: MediaQuery.of(context).size.width * 0.50,
                     child: TextField(
                       controller: _startingMileageController,
                       keyboardType: TextInputType.number,
@@ -245,7 +249,7 @@ class _MileageScreenState extends State<MileageScreen> {
                   ),
                   SizedBox(height: 10),
                   SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.25,
+                    width: MediaQuery.of(context).size.width * 0.50,
                     child: TextField(
                       controller: _endingMileageController,
                       keyboardType: TextInputType.number,
@@ -260,7 +264,7 @@ class _MileageScreenState extends State<MileageScreen> {
               Column(
                 children: [
                   SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.25,
+                    width: MediaQuery.of(context).size.width * 0.50,
                     child: TextField(
                       controller: _typeController,
                       decoration: InputDecoration(
@@ -269,7 +273,7 @@ class _MileageScreenState extends State<MileageScreen> {
                   ),
                   SizedBox(height: 10),
                   SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.25,
+                    width: MediaQuery.of(context).size.width * 0.50,
                     child: TextField(
                       controller: _costController,
                       keyboardType: TextInputType.number,

@@ -11,7 +11,7 @@ const FORMATED_DATE = new Date().toLocaleDateString('en-US', {
     day: 'numeric' 
 });
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzDlHuOq8lYiIXLmFVddySJZWatHuGkElZ__f-gVo7oofMVxWO-LrZxOOlJAg_xAch12Q/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz3IBmkvQYzrRS6rW3iBq9PsmD9OE6wiJ52COavWk4fG1ELdqagJpuR98T3EzTqHPUaiA/exec';
 
 // Function to get the mileage input value
 function setMileage() {

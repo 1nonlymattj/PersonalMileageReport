@@ -48,6 +48,29 @@ function createMaintenanceSubmitted() {
     });
 }
 
+function createInvalidMileageDialog(startMileage, endMileage) {
+    message = endMileage + ' is less than start mileage of ' + startMileage;
+    $('<div id = dialog align =center > ' + '<h3>' + message + '</h3>' + '<br>' + ' </div>'
+    ).dialog({
+        title: ' Invalid End Mileage Entered',
+        autoOpen: true,
+        modal: true,
+        width: $(window).width() > 400 ? 400 : 'auto',
+        resizable: false,
+        draggable: false,
+        buttons: {
+            'Close': {
+                text: 'Close',
+                'class': 'dialogButton',
+                'id': 'confim',
+                click: function () {
+                    $(this).dialog('destroy');
+                }
+            }
+        }
+    });
+}
+
 function createMissingMileageDialog() {
     message = 'Please enter a valid whole number for mileage.';
     $('<div id = dialog align =center > ' + '<h3>' + message + '</h3>' + '<br>' + ' </div>'

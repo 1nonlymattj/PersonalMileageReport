@@ -26,7 +26,7 @@ packages:
     source: hosted
     version: "2.12.0"
   characters:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: characters
       sha256: "04a925763edad70e8443c99234dc3328f442e811f1d8fd1a72f1c8ad0f69a605"
@@ -58,7 +58,7 @@ packages:
     source: hosted
     version: "1.1.2"
   collection:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: collection
       sha256: a1ace0a119f20aabc852d165077c036cd864315bd99b7eaa10a60100341941bf
@@ -135,10 +135,10 @@ packages:
     dependency: "direct main"
     description:
       name: intl
-      sha256: "00f33b908655e606b86d2ade4710a231b802eec6f11e87e4ea3783fd72077a50"
+      sha256: "3df61194eb431efc39c4ceba583b95633a403f46c9fd341e550ce0bfa50e9aa5"
       url: "https://pub.dev"
     source: hosted
-    version: "0.20.1"
+    version: "0.20.2"
   json_annotation:
     dependency: transitive
     description:
@@ -148,7 +148,7 @@ packages:
     source: hosted
     version: "4.9.0"
   material_color_utilities:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: material_color_utilities
       sha256: f7142bb1154231d7ea5f96bc7bde4bda2a0945d2806bb11670e30b850d56bdec
@@ -156,7 +156,7 @@ packages:
     source: hosted
     version: "0.11.1"
   meta:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: meta
       sha256: bdb68674043280c3428e9ec998512fb681678676b3c54e773629ffe74419f8c7
@@ -196,7 +196,7 @@ packages:
     source: hosted
     version: "2.3.0"
   petitparser:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: petitparser
       sha256: c15605cd28af66339f8eb6fbe0e541bfe2d1b72d5825efc6598f3e0a31b9ad27
@@ -231,18 +231,18 @@ packages:
     dependency: "direct main"
     description:
       name: shared_preferences
-      sha256: a752ce92ea7540fc35a0d19722816e04d0e72828a4200e83a98cf1a1eb524c9a
+      sha256: "688ee90fbfb6989c980254a56cb26ebe9bb30a3a2dff439a78894211f73de67a"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.5"
+    version: "2.5.1"
   shared_preferences_android:
     dependency: transitive
     description:
       name: shared_preferences_android
-      sha256: "138b7bbbc7f59c56236e426c37afb8f78cbc57b094ac64c440e0bb90e380a4f5"
+      sha256: "650584dcc0a39856f369782874e562efd002a9c94aec032412c9eb81419cce1f"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.2"
+    version: "2.4.4"
   shared_preferences_foundation:
     dependency: transitive
     description:

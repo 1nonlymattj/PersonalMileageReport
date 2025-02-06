@@ -29,19 +29,22 @@
 <body>
 
     <div class="container">
-        <!-- <h2>Mileage Log</h2>
-        <label for="mileage">Enter Mileage:</label>
-        <input type="number" id="mileage" min="1" step="1" required>
-        <button onclick="submitMileage()">Submit</button> -->
        <select id="entryType">
             <option value="mileage">Mileage</option>
             <option value="maintenance">Maintenance and Repairs</option>
         </select>
         <br><br>
+        <div id="companySelection">
+        <label class="companySelection"><input type="checkbox" name="companySelection" value="DoorDash">DoorDash</label>
+        <label class="companySelection"><input type="checkbox" name="companySelection" value="UberEats">UberEats</label><br>
+        <label class="companySelection"><input type="checkbox" name="companySelection" value="InstaCart">InstaCart</label>
+        <label class="companySelection"><input type="checkbox" name="companySelection" value="Spark">Spark</label><br>
+        </div>
+        <br><br>
         <div id="mileageInput">
             <label for="mileage">Enter Mileage:</label>
-            <input type="number" id="startMileage" min="1" step="1" placeholder="Starting Mileage" required>
-            <input type="number" id="endMileage" min="1" step="1" placeholder="Ending Mileage" required>
+            <input type="number" name="startMileage" id="startMileage" min="1" step="1" placeholder="Starting Mileage" required>
+            <input type="number" name="endMileage" id="endMileage" min="1" step="1" placeholder="Ending Mileage" required>
         </div>
         
         <div id="maintenanceFields" style="display: none;">
