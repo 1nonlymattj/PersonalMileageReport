@@ -10,17 +10,22 @@ const FORMATED_DATE = new Date().toLocaleDateString('en-US', {
     month: 'long', 
     day: 'numeric' 
 });
+let MISSING_DATE = new Date().toLocaleDateString('en-US', { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+});
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz3IBmkvQYzrRS6rW3iBq9PsmD9OE6wiJ52COavWk4fG1ELdqagJpuR98T3EzTqHPUaiA/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwOyc3G5I30jFC4cYX7iiqSUD3m_Xs-s3lUzRW0LHiOwZUomEhGcsLuRR6qdZnuWss6jg/exec';
 
 // Function to get the mileage input value
 function setMileage() {
     MILEAGE = document.getElementById("endMileage").value - document.getElementById("startMileage").value;
 }
 function setType() {
-    TYPE = document.getElementById("type").value;
+    TYPE = document.getElementById("maintenanceType").value.toUpperCase();
 }
 
 function setCost() {
-    COST = document.getElementById("cost").value;
+    COST = document.getElementById("maintenanceCost").value;
 }
