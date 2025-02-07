@@ -38,6 +38,16 @@ $(document).ready(function () {
     });
 });
 
+function clearForm() {
+    if ($('#entryType').val() === 'maintenance') {
+        clearMaintenanceInputValues();
+        removeMaintenanceLocalStorage();
+    } else {
+        clearMileageInputValues();
+        removeMileageLocalStorage();
+    }
+}
+
 function submitForm() {
     let startMileage = document.getElementById("startMileage").value;
     let endMileage = document.getElementById("endMileage").value;
