@@ -5,37 +5,24 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "android",
-      "request": "launch",
-      "name": "Android Launch",
-      "appSrcRoot": "${workspaceRoot}/app/src/main",
-      "apkFile": "${workspaceRoot}/app/build/outputs/apk/debug/app-debug.apk",
-      "adbPort": 5037
-    },
-    {
-        "name": "Launch Chrome",
-        "request": "launch",
-        "type": "chrome",
-    },
-    {
-      "name": "pmr_app",
-      "cwd": "pmr_app",
+      "name": "mileage_app",
+      "cwd": "mileage_app",
       "request": "launch",
       "type": "dart"
-    },
-    {
-      "name": "pmr_app (profile mode)",
-      "cwd": "pmr_app",
+  },
+  {
+      "name": "mileage_app (profile mode)",
+      "cwd": "mileage_app",
       "request": "launch",
       "type": "dart",
       "flutterMode": "profile"
-    },
-    {
-      "name": "pmr_app (release mode)",
-      "cwd": "pmr_app",
+  },
+  {
+      "name": "mileage_app (release mode)",
+      "cwd": "mileage_app",
       "request": "launch",
       "type": "dart",
       "flutterMode": "release"
-    }
+  }
   ]
 }
