@@ -1,10 +1,48 @@
 function createMileageSubmitted() {
-    if (MILEAGE > 1) {
-        message = MILEAGE + ' miles have  been submitted for ' + FORMATED_DATE + '.';
-    } else {
-        message = MILEAGE + ' mile has  been submitted for ' + FORMATED_DATE + '.';
+    const isDarkMode = document.body.classList.contains("dark-mode");
+
+    let amountMade = parseFloat(document.getElementById("amountMade")?.value || 0);
+    let perMile = 0;
+    let perMileText = '';
+    let perMileColor = isDarkMode ? '#e5e7eb' : '#111827'; // fallback text color
+
+    // Theme-aware colors
+    const COLORS = isDarkMode
+        ? { good: '#34d399', ok: '#fbbf24', bad: '#fb7185' }   // softer/brighter for dark
+        : { good: '#16a34a', ok: '#ca8a04', bad: '#dc2626' };  // richer for light
+
+    if (amountMade > 0 && MILEAGE > 0) {
+        perMile = amountMade / MILEAGE;
+
+        if (perMile >= 2.0) {
+            perMileColor = COLORS.good;
+        } else if (perMile >= 1.25) {
+            perMileColor = COLORS.ok;
+        } else {
+            perMileColor = COLORS.bad;
+        }
+
+        perMileText = `
+            <br>
+            <strong>Amount Made:</strong> $${amountMade.toFixed(2)}<br>
+            <strong>Per Mile:</strong>
+            <span style="color:${perMileColor}; font-weight:bold;">
+                $${perMile.toFixed(2)} / mile
+            </span>
+        `;
     }
-    $('<div id = dialog align =center > ' + '<h3>' + message + '</h3>' + '<br>' + ' </div>'
+
+    let message = '';
+    if (MILEAGE > 1) {
+        message = MILEAGE + ' miles have been submitted for ' + FORMATED_DATE + '.';
+    } else {
+        message = MILEAGE + ' mile has been submitted for ' + FORMATED_DATE + '.';
+    }
+
+    $('<div id="dialog" align="center">' +
+        '<h3>' + message + '</h3>' +
+        perMileText +
+        '<br></div>'
     ).dialog({
         title: 'Thank You',
         autoOpen: true,
@@ -16,7 +54,7 @@ function createMileageSubmitted() {
             'Close': {
                 text: 'Close',
                 'class': 'dialogButton',
-                'id': 'confim',
+                'id': 'confirm',
                 click: function () {
                     $(this).dialog('destroy');
                 }
@@ -126,6 +164,29 @@ function createMissingMileageDialog() {
     $('<div id = dialog align =center > ' + '<h3>' + message + '</h3>' + '<br>' + ' </div>'
     ).dialog({
         title: ' Missing Mileage',
+        autoOpen: true,
+        modal: true,
+        width: $(window).width() > 400 ? 400 : 'auto',
+        resizable: false,
+        draggable: false,
+        buttons: {
+            'Close': {
+                text: 'Close',
+                'class': 'dialogButton',
+                'id': 'confim',
+                click: function () {
+                    $(this).dialog('destroy');
+                }
+            }
+        }
+    });
+}
+
+function createMissingAmountMadeDialog() {
+    message = 'Please enter an amount made.';
+    $('<div id = dialog align =center > ' + '<h3>' + message + '</h3>' + '<br>' + ' </div>'
+    ).dialog({
+        title: ' Missing Amount Made',
         autoOpen: true,
         modal: true,
         width: $(window).width() > 400 ? 400 : 'auto',

@@ -27,25 +27,11 @@ body.dark-mode {
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
-input.dark-mode, button.dark-mode, select.dark-mode {
+/* Dark mode for inputs & selects only (keep button colors) */
+input.dark-mode, select.dark-mode {
     background: #555;
     color: white;
     border: 1px solid #777;
-}
-
-/* Dark Mode Button Hover Effects */
-.dark-mode button:hover {
-    transition: background 0.3s ease;
-}
-
-.dark-mode button.submit-btn:hover {
-    background-color: #28a745 !important; /* Green for Submit */
-    color: white;
-}
-
-.dark-mode button.clear-btn:hover {
-    background-color: #dc3545 !important; /* Red for Cancel */
-    color: white;
 }
 
 .footer.dark-mode {
@@ -53,13 +39,27 @@ input.dark-mode, button.dark-mode, select.dark-mode {
 }
 
 /* Style for Dark Mode Toggle Button */
-#themeToggle {
+#dashboardBtn{
     position: fixed;
-    top: 10px;
-    left: 70%;
-    background: transparent;
+    width: 10% !important;
+    top: 15px;
+    right: 15px;
+    z-index: 9999;
+
     border: none;
-    font-size: 20px;
+    border-radius: 10px;
+    padding: 10px 12px;
+    background: transparent;
+    cursor: pointer;
+}
+
+#themeToggle{
+    position: fixed;
+    width: 10% !important;
+    top: 15px;
+    right: 70px; /* move left so dashboard can be top-right */
+    background: transparent;
+    z-index: 9999;
     cursor: pointer;
 }
 
@@ -114,11 +114,6 @@ button {
     margin-top: 15px;
 }
 
-button:hover {
-    background-color: #313532;
-    color: #ffffff;
-}
-
 .submit-btn {
     background-color: #28db10;
 }
@@ -167,8 +162,17 @@ button:hover {
 
 /* End Footer */
 
+/* =========================
+   jQuery UI Dialog Styling
+   ========================= */
 
-/* Start Dialog */
+/* Make dialog + all children inherit the app font */
+.ui-dialog,
+.ui-dialog * {
+    font-family: inherit !important;
+}
+
+/* Base (Light Mode) Dialog */
 .ui-dialog {
     background: #FFFFFF;
     border: 2px #000000 solid;
@@ -178,19 +182,30 @@ button:hover {
 
 .ui-dialog-titlebar {
     background: #BFBFBF;
+    color: #000000;
     text-align: center;
     padding: .5em;
-    font-family: sans-serif;
     font-weight: bold;
     font-size: 18px;
+}
+
+.ui-dialog-title {
+    color: inherit;
 }
 
 .ui-dialog-content {
     min-height: 50px !important;
     padding: 1em 2em;
-    font-family: sans-serif;
     font-size: 18px;
-    color: #000000 !important;
+
+    /* IMPORTANT: removed !important so dark mode can override */
+    color: #000000;
+    background: transparent;
+}
+
+.ui-dialog-buttonpane {
+    background: #FFFFFF;
+    border-top: 1px solid rgba(0,0,0,.12);
 }
 
 .ui-dialog-buttonset {
@@ -202,6 +217,7 @@ button:hover {
     display: none;
 }
 
+/* Overlay stays the same */
 .ui-widget-overlay {
     position: fixed;
     top: 0;
@@ -212,10 +228,47 @@ button:hover {
     opacity: 0.7;
 }
 
-.ui-front {
-    z-index: 100;
+/* =========================
+   Dark Mode Overrides
+   ========================= */
+body.dark-mode .ui-dialog {
+    background: #1f1f1f !important;
+    border: 2px solid #555 !important;
 }
 
+body.dark-mode .ui-dialog-titlebar {
+    background: #2a2a2a !important;
+    color: #ffffff !important;
+    border-bottom: 1px solid #444 !important;
+}
+
+body.dark-mode .ui-dialog-title {
+    color: #ffffff !important;
+}
+
+body.dark-mode .ui-dialog-content {
+    background: #1f1f1f !important;
+    color: #e5e7eb !important;
+}
+
+body.dark-mode .ui-dialog-buttonpane {
+    background: #1f1f1f !important;
+    border-top: 1px solid #444 !important;
+}
+
+/* jQuery UI default buttons inside dialogs */
+body.dark-mode .ui-dialog-buttonpane button {
+    background: #3a3a3a !important;
+    color: #ffffff !important;
+    border: 1px solid #555 !important;
+}
+body.dark-mode .ui-dialog-buttonpane button:hover {
+    background: #4a4a4a !important;
+}
+
+/* =========================
+   Your Existing Dialog Buttons
+   ========================= */
 .dialogButton {
     height: 40px;
     width: 350px;
@@ -251,9 +304,9 @@ button:hover {
     font-size: 42px !important;
 }
 
-/* End Dialog */
-
-/* Dialog Form */
+/* =========================
+   Dialog Form
+   ========================= */
 .form-group {
     margin: 30px auto;
     width: 325px;
@@ -273,4 +326,152 @@ button:hover {
     word-wrap: break-word;
     word-break: break-all;
     resize: none;
+}
+
+/* =========================
+   Dashboard Close Button
+   Always Red
+   ========================= */
+
+/* Target ONLY the dashboard dialog Close button */
+#dashboardDialog ~ .ui-dialog-buttonpane button {
+    background-color: #cf2a2a !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 8px;
+    font-size: 16px;
+    padding: 10px 24px;
+    cursor: pointer;
+}
+
+/* Hover state (slightly darker red) */
+#dashboardDialog ~ .ui-dialog-buttonpane button:hover {
+    background-color: #b52424 !important;
+}
+
+/* =========================
+   Dashboard Dialog Controls
+   ========================= */
+
+#dashboardDialog,
+#dashboardDialog * {
+  font-family: inherit !important;
+}
+
+/* Layout */
+#dashboardDialog .dash-filter {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  margin: 0 0 14px;
+}
+
+#dashboardDialog .dash-field {
+  min-width: 140px;
+}
+
+#dashboardDialog .dash-label {
+  font-size: 12px;
+  opacity: .85;
+}
+
+/* Inputs */
+#dashboardDialog .dash-input {
+  width: 160px;
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: #fff;
+  color: #111827;
+}
+
+/* Buttons (IMPORTANT: override your global button styles) */
+#dashboardDialog .dash-btn {
+  width: auto !important;         /* overrides button{width:40%} */
+  min-width: 140px;
+  margin-top: 0 !important;       /* overrides your global margin-top */
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: #f3f4f6;
+  color: #111827 !important;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#dashboardDialog .dash-btn:hover {
+  background: #e5e7eb;
+}
+
+/* =========================
+   Dashboard Tables
+   ========================= */
+
+/* Base table text (normal cells + headers) */
+#dashboardDialog .dash-table th,
+#dashboardDialog .dash-table td {
+  color: #111827;
+}
+
+/* Dark mode base table text */
+body.dark-mode #dashboardDialog .dash-table th,
+body.dark-mode #dashboardDialog .dash-table td {
+  color: #e5e7eb;
+}
+
+/* IMPORTANT:
+   Do NOT override special value colors. These must win. */
+#dashboardDialog .dash-income {
+  color: #2563eb !important; /* income blue */
+}
+body.dark-mode #dashboardDialog .dash-income {
+  color: #60a5fa !important;
+}
+
+#dashboardDialog .dash-expense {
+  color: rgba(17,24,39,.70) !important; /* muted expense */
+}
+body.dark-mode #dashboardDialog .dash-expense {
+  color: rgba(229,231,235,.70) !important;
+}
+
+/* $/mile should ALWAYS use the inline color you set in JS */
+#dashboardDialog .dash-permile {
+  color: inherit; /* fallback */
+}
+
+/* =========================
+   Dashboard Dark Mode
+   ========================= */
+body.dark-mode #dashboardDialog {
+  color-scheme: dark; /* makes date input/calendar icon behave better */
+}
+
+body.dark-mode #dashboardDialog .dash-label {
+  color: rgba(229,231,235,.75);
+}
+
+body.dark-mode #dashboardDialog .dash-input {
+  border: 1px solid rgba(255,255,255,.15);
+  background: #2b2b2b;
+  color: #e5e7eb;
+}
+
+body.dark-mode #dashboardDialog .dash-btn {
+  border: 1px solid rgba(255,255,255,.15);
+  background: #3a3a3a;
+  color: #ffffff !important;
+}
+
+body.dark-mode #dashboardDialog .dash-btn:hover {
+  background: #4a4a4a;
+}
+
+body.dark-mode #dashboardDialog .dash-expense {
+  color: rgba(229,231,235,.70); /* dark mode muted */
+}
+
+body.dark-mode #dashboardDialog .dash-income {
+  color: #60a5fa;
 }

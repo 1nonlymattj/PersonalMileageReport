@@ -27,6 +27,7 @@
 </head>
 <body>
     <button id="themeToggle">🌞</button>
+    <button id="dashboardBtn" title="Dashboard">📊</button>
 
     <div class="container">
        <select id="entryType">
@@ -35,10 +36,14 @@
         </select>
         <br><br>
         <div id="mileageInput">
-            <label for="mileage">Enter Mileage:</label>
-            <input type="number" name="startMileage" id="startMileage" min="1" step="1" placeholder="Starting Mileage" required>
-            <input type="number" name="endMileage" id="endMileage" min="1" step="1" placeholder="Ending Mileage" required>
-        </div>
+  <label for="mileage">Enter Mileage:</label>
+  <input type="number" name="startMileage" id="startMileage" min="1" step="1" placeholder="Starting Mileage" required>
+  <input type="number" name="endMileage" id="endMileage" min="1" step="1" placeholder="Ending Mileage" required>
+
+  <label for="amountMade">Amount Made ($):</label>
+  <input type="number" name="amountMade" id="amountMade" min="0" step="0.01" placeholder="Amount Made" required>
+</div>
+
         
         <div id="maintenanceFields" style="display: none;">
             <label for="type">Type:</label>
@@ -89,6 +94,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
     <script src="resources/js/Variables.js"></script>
     <script src="resources/js/PMR.js"></script>
+    <script src="resources/js/Dashboard.js"></script>
     <script src="resources/js/Dialogs.js"></script>
     <script src="resources/js/Inquiry.js"></script>
 

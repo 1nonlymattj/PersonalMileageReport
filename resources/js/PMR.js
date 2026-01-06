@@ -29,6 +29,10 @@ $(document).ready(function () {
             localStorage.setItem('mileage-timestamp', Date.now());
     });
 
+    $('#amountMade').on('input', function () {
+        localStorage.setItem('mileage-amountMade', $('#amountMade').val());
+    });
+
     $('#maintenanceType').on('input', function () {
         localStorage.setItem(`maintenance-type`, $('#maintenanceType').val().toUpperCase());
     });
@@ -49,6 +53,16 @@ $(document).ready(function () {
             document.querySelectorAll(".container, input, button, select, .footer").forEach(el => el.classList.remove("dark-mode"));
             themeToggle.textContent = "🌞";
         }
+        // Refresh open dialogs to match new theme
+        $(".ui-dialog").each(function () {
+            // jQuery UI dialog wrapper
+            const $dlg = $(this);
+            if (document.body.classList.contains("dark-mode")) {
+                $dlg.addClass("dark-mode");
+            } else {
+                $dlg.removeClass("dark-mode");
+            }
+        });
     }
 
     // Check localStorage for theme preference
@@ -57,10 +71,17 @@ $(document).ready(function () {
 
     // Toggle theme and save preference
     themeToggle.addEventListener("click", function () {
-        let newTheme = body.classList.contains("dark-mode") ? "light" : "dark";
-        localStorage.setItem("theme", newTheme);
-        applyTheme(newTheme);
+    let newTheme = body.classList.contains("dark-mode") ? "light" : "dark";
+    localStorage.setItem("theme", newTheme);
+    applyTheme(newTheme);
+
+    applyDashboardTheme(); // NEW
+
     });
+
+    $('#dashboardBtn').on('click', function () {
+        createDashboardPinDialog();
+        });
 });
 
 function clearForm() {
@@ -77,6 +98,7 @@ function submitForm() {
     let startMileage = document.getElementById("startMileage").value;
     let endMileage = document.getElementById("endMileage").value;
     let mileage = endMileage - startMileage;
+    let amountMade = document.getElementById("amountMade").value;
     let entryType = document.getElementById("entryType").value;
     let formData = { "date": FORMATED_DATE };
 
@@ -86,9 +108,15 @@ function submitForm() {
             createMissingMileageDialog();
             return;
         }
+        if (amountMade === "" || isNaN(amountMade) || Number(amountMade) < 0) {
+            // You can create a dialog like your others; for now:
+            createMissingAmountMadeDialog();
+            return;
+        }
         formData["startMileage"] = startMileage;
         formData["endMileage"] = endMileage
         formData["mileage"] = mileage;
+        formData["amountMade"] = amountMade;
     } else {
         setType();
         setCost();
@@ -129,6 +157,7 @@ function submitMissingForm(missingDate) {
     let startMileage = document.getElementById("startMileage").value;
     let endMileage = document.getElementById("endMileage").value;
     let mileage = endMileage - startMileage;
+    let amountMade = document.getElementById("amountMade").value;
     let entryType = document.getElementById("entryType").value;
     let formData = { "date": MISSING_DATE };
 
@@ -138,9 +167,15 @@ function submitMissingForm(missingDate) {
             createMissingMileageDialog();
             return;
         }
+        if (amountMade === "" || isNaN(amountMade) || Number(amountMade) < 0) {
+            // You can create a dialog like your others; for now:
+            createMissingAmountMadeDialog();
+            return;
+        }
         formData["startMileage"] = startMileage;
         formData["endMileage"] = endMileage
         formData["mileage"] = mileage;
+        formData["amountMade"] = amountMade;
     } else {
         setType();
         setCost();
@@ -180,6 +215,9 @@ function checkMileageLocalStorage() {
     if (localStorage.getItem('mileage-finish')) {
         $('#endMileage').val(localStorage.getItem('mileage-finish'));
     }
+    if (localStorage.getItem('mileage-amountMade')) {
+        $('#amountMade').val(localStorage.getItem('mileage-amountMade'));
+    }
 
     if (localStorage.getItem('mileage-timestamp')) {
         let storedTimestamp = parseInt(localStorage.getItem('mileage-timestamp'), 10);
@@ -217,6 +255,7 @@ function removeMileageLocalStorage() {
     localStorage.removeItem('mileage-start');
     localStorage.removeItem('mileage-finish');
     localStorage.removeItem('total-mileage');
+    localStorage.removeItem('mileage-amountMade');
     localStorage.removeItem('mileage-timestamp');
 }
 
@@ -229,6 +268,7 @@ function removeMaintenanceLocalStorage() {
 function clearMileageInputValues() {
     document.getElementById("startMileage").value = "";
     document.getElementById("endMileage").value = "";
+    document.getElementById("amountMade").value = "";
 }
 
 function clearMaintenanceInputValues() {
