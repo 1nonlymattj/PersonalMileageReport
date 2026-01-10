@@ -17,6 +17,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
 
   final typeCtrl = TextEditingController();
   final costCtrl = TextEditingController();
+
   bool loading = false;
 
   @override
@@ -31,26 +32,42 @@ class _MaintenancePageState extends State<MaintenancePage> {
     final sp = await SharedPreferences.getInstance();
     typeCtrl.text = sp.getString(CacheKeys.maintType) ?? '';
     costCtrl.text = sp.getString(CacheKeys.maintCost) ?? '';
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   Future<void> _saveCache() async {
     final sp = await SharedPreferences.getInstance();
     await sp.setString(CacheKeys.maintType, typeCtrl.text);
     await sp.setString(CacheKeys.maintCost, costCtrl.text);
+
+    await sp.setInt(
+      CacheKeys.maintDraftTouchedAt,
+      DateTime.now().millisecondsSinceEpoch,
+    );
   }
 
   Future<void> _clearCache() async {
     final sp = await SharedPreferences.getInstance();
     await sp.remove(CacheKeys.maintType);
     await sp.remove(CacheKeys.maintCost);
+    await sp.remove(CacheKeys.maintDraftTouchedAt);
+    await sp.remove(CacheKeys.maintDraftLastRemindedAt);
+  }
+
+  void _snack(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 
   Future<void> submit() async {
     final type = typeCtrl.text.trim();
-    final cost = double.tryParse(costCtrl.text.trim()) ?? 0;
-    if (type.isEmpty || cost <= 0) {
-      _snack('Enter type and cost.');
+    final cost = double.tryParse(costCtrl.text.trim());
+
+    if (type.isEmpty) {
+      _snack('Enter a maintenance type.');
+      return;
+    }
+    if (cost == null || cost <= 0) {
+      _snack('Enter a valid cost.');
       return;
     }
 
@@ -65,16 +82,20 @@ class _MaintenancePageState extends State<MaintenancePage> {
       );
 
       if (!mounted) return;
-      showDialog(
+
+      await showDialog(
         context: context,
         builder: (_) => AlertDialog(
           title: const Text('Thank You'),
           content: Text(
-              '${type.toUpperCase()} : \$${cost.toStringAsFixed(2)} submitted for ${DateUtilsX.displayToday()}.'),
+            '${type.toUpperCase()} : \$${cost.toStringAsFixed(2)} submitted for ${DateUtilsX.displayToday()}.',
+          ),
           actions: [
             TextButton(
               style: TextButton.styleFrom(
-                  backgroundColor: Colors.red, foregroundColor: Colors.white),
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+              ),
               onPressed: () => Navigator.pop(context),
               child: const Text('Close'),
             ),
@@ -85,6 +106,8 @@ class _MaintenancePageState extends State<MaintenancePage> {
       typeCtrl.clear();
       costCtrl.clear();
       await _clearCache();
+
+      if (mounted) setState(() {});
     } catch (e) {
       _snack('Submit failed: $e');
     } finally {
@@ -92,55 +115,74 @@ class _MaintenancePageState extends State<MaintenancePage> {
     }
   }
 
-  void clear() async {
+  Future<void> clear() async {
     typeCtrl.clear();
     costCtrl.clear();
     await _clearCache();
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
-  void _snack(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+  @override
+  void dispose() {
+    typeCtrl.dispose();
+    costCtrl.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          TextField(
+    final bottomPad = MediaQuery.of(context).padding.bottom + 90;
+
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: EdgeInsets.fromLTRB(16, 16, 16, bottomPad),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            TextField(
               controller: typeCtrl,
-              decoration: const InputDecoration(labelText: 'Type')),
-          const SizedBox(height: 10),
-          TextField(
+              decoration: const InputDecoration(
+                labelText: 'Type',
+                border: OutlineInputBorder(),
+              ),
+              textCapitalization: TextCapitalization.characters,
+            ),
+            const SizedBox(height: 12),
+            TextField(
               controller: costCtrl,
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
-              decoration: const InputDecoration(labelText: 'Cost (\$)')),
-          const Spacer(),
-          if (loading) const CircularProgressIndicator(),
-          if (!loading)
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    style: AppButtons.red(),
-                    onPressed: clear,
-                    child: const Text('Clear'),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: ElevatedButton(
-                    style: AppButtons.green(),
-                    onPressed: submit,
-                    child: const Text('Submit'),
-                  ),
-                ),
-              ],
+              decoration: const InputDecoration(
+                labelText: 'Cost (\$)',
+                border: OutlineInputBorder(),
+              ),
             ),
-        ],
+            const SizedBox(height: 16),
+            if (loading) ...[
+              const Center(child: CircularProgressIndicator()),
+            ] else ...[
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      style: AppButtons.red(),
+                      onPressed: clear,
+                      child: const Text('Clear'),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton(
+                      style: AppButtons.green(),
+                      onPressed: submit,
+                      child: const Text('Submit'),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ],
+        ),
       ),
     );
   }

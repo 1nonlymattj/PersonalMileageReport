@@ -39,6 +39,9 @@ dependencies:
   share_plus: ^7.2.1
   path_provider: ^2.1.2
 
+  flutter_local_notifications: ^17.2.2
+  workmanager: ^0.8.0
+
   webview_flutter: ^4.10.0
   webview_flutter_android: ^4.3.2
   webview_flutter_wkwebview: ^3.18.1

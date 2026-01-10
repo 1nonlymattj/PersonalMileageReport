@@ -1,7 +1,9 @@
+// lib/pages/dashboard_page.dart
 import 'package:flutter/material.dart';
 import '../services/api.dart';
 import '../models/dashboard_models.dart';
 import '../utils/csv_export.dart';
+import '../utils/per_mile_colors.dart';
 import '../widgets/app_buttons.dart';
 import '../widgets/totals_card.dart';
 
@@ -21,14 +23,10 @@ class _DashboardPageState extends State<DashboardPage> {
 
   DashboardData? data;
 
-  Color perMileColor(double v) {
-    if (v >= 2.0) return Colors.green;
-    if (v >= 1.25) return Colors.amber;
-    return Colors.red;
-  }
+  // Income stays BLUE to avoid confusion with per-mile colors
+  Color incomeColor() => Colors.blue;
 
-  Color incomeColor() => Colors.blue; // avoid confusion with per-mile colors
-
+  // Expenses muted (not red), theme-aware
   Color expenseColor(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark
           ? Colors.grey.shade300
@@ -42,7 +40,6 @@ class _DashboardPageState extends State<DashboardPage> {
         end: endYmd ?? '',
       );
 
-      // Convert Map -> DashboardData
       final d = DashboardData.fromJson(raw);
 
       if (mounted) setState(() => data = d);
@@ -109,107 +106,131 @@ class _DashboardPageState extends State<DashboardPage> {
     if (loading) return const Center(child: CircularProgressIndicator());
     final d = data ?? DashboardData(mileage: [], monthly: [], maintenance: []);
 
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        Wrap(
-          spacing: 10,
-          runSpacing: 10,
-          children: [
-            OutlinedButton.icon(
-              onPressed: pickStart,
-              icon: const Icon(Icons.date_range),
-              label: Text(startYmd == null ? 'Start' : 'Start: $startYmd'),
-            ),
-            OutlinedButton.icon(
-              onPressed: pickEnd,
-              icon: const Icon(Icons.date_range),
-              label: Text(endYmd == null ? 'End' : 'End: $endYmd'),
-            ),
-            ElevatedButton(
-              style: AppButtons.red(),
-              onPressed: clearFilter,
-              child: const Text('Clear'),
-            ),
-            ElevatedButton(
-              style: AppButtons.blue(),
-              onPressed: () async {
-                if (data == null) return;
-                await CsvExport.exportDashboardToCsv(data!);
-              },
-              child: const Text('Export CSV'),
-            ),
-          ],
-        ),
-        const SizedBox(height: 14),
-        TotalsCard(
-          totalMiles: totalMiles,
-          totalIncome: totalIncome,
-          totalPerMile: totalPerMile,
-        ),
-        const SizedBox(height: 16),
-        const Text('Mileage Summary',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
-        const SizedBox(height: 8),
-        ...d.mileage.map((r) => Card(
-              child: ListTile(
-                title: Text(r.date),
-                subtitle: Text('${r.miles} miles'),
-                trailing: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('\$${r.amount.toStringAsFixed(2)}',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w900, color: incomeColor())),
-                    Text('\$${r.perMile.toStringAsFixed(2)}/mi',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w900,
-                            color: perMileColor(r.perMile))),
-                  ],
-                ),
+    return SafeArea(
+      child: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          const Text(
+            'Dashboard',
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
+          ),
+          const SizedBox(height: 10),
+          Wrap(
+            spacing: 10,
+            runSpacing: 10,
+            children: [
+              OutlinedButton.icon(
+                onPressed: pickStart,
+                icon: const Icon(Icons.date_range),
+                label: Text(startYmd == null ? 'Start' : 'Start: $startYmd'),
               ),
-            )),
-        const SizedBox(height: 16),
-        const Text('Monthly Totals',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
-        const SizedBox(height: 8),
-        ...d.monthly.map((r) => Card(
-              child: ListTile(
-                title: Text(r.label),
-                subtitle: Text('${r.miles} miles'),
-                trailing: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('\$${r.amount.toStringAsFixed(2)}',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w900, color: incomeColor())),
-                    Text('\$${r.perMile.toStringAsFixed(2)}/mi',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w900,
-                            color: perMileColor(r.perMile))),
-                  ],
-                ),
+              OutlinedButton.icon(
+                onPressed: pickEnd,
+                icon: const Icon(Icons.date_range),
+                label: Text(endYmd == null ? 'End' : 'End: $endYmd'),
               ),
-            )),
-        const SizedBox(height: 16),
-        const Text('Maintenance & Repairs',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
-        const SizedBox(height: 8),
-        ...d.maintenance.map((r) => Card(
-              child: ListTile(
-                title: Text(r.date),
-                subtitle: Text(r.type),
-                trailing: Text(
-                  '-\$${r.cost.toStringAsFixed(2)}',
-                  style: TextStyle(
+              ElevatedButton(
+                style: AppButtons.red(),
+                onPressed: clearFilter,
+                child: const Text('Clear'),
+              ),
+              ElevatedButton(
+                style: AppButtons.blue(),
+                onPressed: () async {
+                  if (data == null) return;
+                  await CsvExport.exportDashboardToCsv(data!);
+                },
+                child: const Text('Export CSV'),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          TotalsCard(
+            totalMiles: totalMiles,
+            totalIncome: totalIncome,
+            totalPerMile: totalPerMile,
+          ),
+          const SizedBox(height: 16),
+          const Text('Mileage Summary',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
+          const SizedBox(height: 8),
+          ...d.mileage.map((r) => Card(
+                child: ListTile(
+                  title: Text(r.date),
+                  subtitle: Text('${r.miles} miles'),
+                  trailing: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '\$${r.amount.toStringAsFixed(2)}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          color: incomeColor(),
+                        ),
+                      ),
+                      Text(
+                        '\$${r.perMile.toStringAsFixed(2)}/mi',
+                        // ✅ Theme-aware per-mile colors
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          color: PerMileColors.forValue(context, r.perMile),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )),
+          const SizedBox(height: 16),
+          const Text('Monthly Totals',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
+          const SizedBox(height: 8),
+          ...d.monthly.map((r) => Card(
+                child: ListTile(
+                  title: Text(r.label),
+                  subtitle: Text('${r.miles} miles'),
+                  trailing: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '\$${r.amount.toStringAsFixed(2)}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          color: incomeColor(),
+                        ),
+                      ),
+                      Text(
+                        '\$${r.perMile.toStringAsFixed(2)}/mi',
+                        // ✅ Theme-aware per-mile colors
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          color: PerMileColors.forValue(context, r.perMile),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )),
+          const SizedBox(height: 16),
+          const Text('Maintenance & Repairs',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900)),
+          const SizedBox(height: 8),
+          ...d.maintenance.map((r) => Card(
+                child: ListTile(
+                  title: Text(r.date),
+                  subtitle: Text(r.type),
+                  trailing: Text(
+                    '-\$${r.cost.toStringAsFixed(2)}',
+                    style: TextStyle(
                       fontWeight: FontWeight.w900,
-                      color: expenseColor(context)),
+                      color: expenseColor(context),
+                    ),
+                  ),
                 ),
-              ),
-            )),
-      ],
+              )),
+        ],
+      ),
     );
   }
 }

@@ -1,7 +1,22 @@
 class CacheKeys {
-  static const mileageStart = 'mileage-start';
-  static const mileageEnd = 'mileage-end';
-  static const mileageAmount = 'mileage-amount';
-  static const maintType = 'maint-type';
-  static const maintCost = 'maint-cost';
+  // mileage drafts
+  static const mileageStart = 'mileageStart';
+  static const mileageEnd = 'mileageEnd';
+  static const mileageAmount = 'mileageAmount';
+
+  // when user last changed any mileage field (millis)
+  static const mileageDraftTouchedAt = 'mileageDraftTouchedAt';
+
+  // last time we fired a mileage reminder (millis)
+  static const mileageDraftLastRemindedAt = 'mileageDraftLastRemindedAt';
+
+  // maintenance drafts
+  static const maintType = 'maintType';
+  static const maintCost = 'maintCost';
+
+  // when user last changed any maintenance field (millis)
+  static const maintDraftTouchedAt = 'maintDraftTouchedAt';
+
+  // last time we fired a maintenance reminder (millis)
+  static const maintDraftLastRemindedAt = 'maintDraftLastRemindedAt';
 }
